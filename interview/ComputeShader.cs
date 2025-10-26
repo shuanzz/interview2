@@ -62,7 +62,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
             //如果目標 Boid 在規避半徑內
             if (sqrDst < avoidRadius * avoidRadius)
             {
-                //計算反向單位向量，使當前 Boid 與 boidB 保持距離 (這裡沒有依照距離算權重!)
+                //計算反向單位向量，使當前 Boid 與 boidB 保持距離
                 boids[id.x].separationHeading -= offset / (sqrDst * sqrDst);  //前面sqrDst是normalize的後面是權重(距離越近權重越大)
             }
         }

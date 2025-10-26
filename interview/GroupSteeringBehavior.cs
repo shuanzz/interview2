@@ -58,12 +58,7 @@ public class Boid : MonoBehaviour
 
     void Awake()
     {
-        //material = transform.GetComponentInChildren<MeshRenderer> ().material;
-
         cachedTransform = transform;
-
-        //取得該Enemy的AIData
-        //aiData = GetComponent<AIData>();
     }
 
 
@@ -78,14 +73,6 @@ public class Boid : MonoBehaviour
         float startSpeed = (aiData.minSpeed + aiData.maxSpeed) / 2;
         //計算"初始"速度
         velocity = transform.forward * startSpeed;
-    }
-
-    public void SetColour(Color col)
-    {
-        if (material != null)
-        {
-            material.color = col;
-        }
     }
 
     public void UpdateBoid()
@@ -128,10 +115,6 @@ public class Boid : MonoBehaviour
                 acceleration += seperationForce;
             }
 
-            //測試碰撞射線
-            Ray forwardRayTest = new Ray(head.position, forward * aiData.collisionAvoidDst);
-            Debug.DrawRay(forwardRayTest.origin, forwardRayTest.direction * aiData.collisionAvoidDst, Color.green);
-
             //檢查"前方"打射線有沒有障礙物
             if (IsHeadingForCollision())
             {
@@ -164,13 +147,13 @@ public class Boid : MonoBehaviour
 
     }
     /// <summary>
-    /// 用SphereCast檢查"前方"有沒有障礙物，如果有，則返回true，否則返回false
+    /// 用Raycast檢查"前方"有沒有障礙物，如果有，則返回true，否則返回false
     /// </summary>
     /// <returns></returns>
     bool IsHeadingForCollision()
     {
         RaycastHit hit;
-        if (Physics.SphereCast(head.position, aiData.boundsRadius, forward, out hit, aiData.collisionAvoidDst, aiData.obstacleMask))
+        if (Physics.Raycast(head.position, aiData.boundsRadius, forward, out hit, aiData.collisionAvoidDst, aiData.obstacleMask))
         {
             return true;
         }
@@ -191,19 +174,16 @@ public class Boid : MonoBehaviour
         {
             //將本地空間中的射線方向轉換為世界空間方向。TransformDirection 方法將本地坐標系的向量轉換為世界坐標系，這是因為 Boid 可能在運動，背離世界坐標系的方向。
             Vector3 dir = cachedTransform.TransformDirection(rayDirections[i]);
-            //創建一個射線，起點為 Boid 的當前位置，方向為剛才計算出的世界方向
-            //在class做宣稱!!!!!!!!!!!!!!! <---------待做
-            Ray ray = new Ray(head.position, dir);
 
+            //創建一個射線，起點為 Boid 的當前位置，方向為剛才計算出的世界方向
+            Ray ray = new Ray(head.position, dir);
             Debug.DrawRay(ray.origin, ray.direction * aiData.collisionAvoidDst, Color.red);
 
             //ray：表示射線的起點和方向。
-            //aiData.boundsRadius：表示用於碰撞檢測的球體半徑，球柱的半徑，避免沒檢測到太小的障礙物。
             //aiData.collisionAvoidDst：表示檢測的最大距離。
             //aiData.obstacleMask：用於過濾特定的碰撞層，只檢測我們關心的障礙物。
             //如果檢測的方向沒有障礙物，就返回該方向!
-            //改用SphereCastNonAlloc <---------待做
-            if (!Physics.SphereCast(ray, aiData.boundsRadius, aiData.collisionAvoidDst, aiData.obstacleMask))
+            if (!Physics.Raycast(ray, aiData.collisionAvoidDst, aiData.obstacleMask))
             {
                 return dir;
             }
