@@ -144,8 +144,8 @@ public class Boid : MonoBehaviour
             position = cachedTransform.position;
             forward = cachedTransform.forward;
         }
-
     }
+
     /// <summary>
     /// 用Raycast檢查"前方"有沒有障礙物，如果有，則返回true，否則返回false
     /// </summary>
@@ -166,9 +166,7 @@ public class Boid : MonoBehaviour
     /// <returns></returns>
     Vector3 ObstacleRays()
     {
-
         Vector3[] rayDirections = BoidHelper.directions;
-
 
         for (int i = 0; i < rayDirections.Length; i++)
         {
@@ -188,7 +186,6 @@ public class Boid : MonoBehaviour
         //如果所有射線方向上都檢測到障礙物，則方法返回 Boid 當前的前向方向（forward），這意味著 Boid 將繼續當前的運動方向，而不會改變
         return forward;
     }
-
 
     /// <summary>
     /// 計算seek的力，用ai和目標向量(值為最大速度) - ai當前速度向量 
