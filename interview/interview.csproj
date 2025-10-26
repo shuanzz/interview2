@@ -43,7 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="ComputeShader.cs" />
+    <Compile Include="FibonacciSphere.cs" />
+    <Compile Include="GetData.cs" />
+    <Compile Include="GroupSteeringBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
