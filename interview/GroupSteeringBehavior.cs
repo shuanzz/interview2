@@ -172,9 +172,6 @@ public class Boid : MonoBehaviour
 
         for (int i = 0; i < rayDirections.Length; i++)
         {
-            //將本地空間中的射線方向轉換為世界空間方向。TransformDirection 方法將本地坐標系的向量轉換為世界坐標系，這是因為 Boid 可能在運動，背離世界坐標系的方向。
-            Vector3 dir = cachedTransform.TransformDirection(rayDirections[i]);
-
             //創建一個射線，起點為 Boid 的當前位置，方向為剛才計算出的世界方向
             Ray ray = new Ray(head.position, dir);
             Debug.DrawRay(ray.origin, ray.direction * aiData.collisionAvoidDst, Color.red);
